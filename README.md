@@ -1,25 +1,25 @@
 # ThreeDPoseUnitySample
 
-�摜�A����A�J�����Ȃǂ̂Q�����̉摜�f�[�^����l�̂̂R�����̎p���𐄒肷��@�B�w�K���������Ă��܂��B
+画像、動画、カメラなどの２次元の画像データから人体の３次元の姿勢を推定する機械学習を研究しています。
 
-ThreeDPoseUnitySample�́A���̊w�K���ʂ̃��f����Unity���g�p���������T���v���ł��B�p������͈�l���ʂ��Ă���摜��O��Ƃ��Ă��܂��B�����l�̐���ɂ͑Ή����Ă��܂���B
+ThreeDPoseUnitySampleは、その学習結果のモデルとUnityを使用した実装サンプルです。姿勢推定は一人が写っている画像を前提としています。複数人の推定には対応していません。
 
-## �g����
-Video Player�ɓ�����Z�b�g���܂��B���̓��悩��clipRect�̃T�C�Y�ɐ؂�o���ATextureObject����Ďp������p��onnx�ɓn����܂��B
-�킴�킴TextureObject�ɓn���K�v�͂���܂��񂪁A���͉摜��224��224��z�肵�Ă��邽�߂��ׂ̈̊m�F�p�ł��B
+## 使い方
+Video Playerに動画をセットします。この動画からclipRectのサイズに切り出し、TextureObjectを介して姿勢推定用のonnxに渡されます。
+わざわざTextureObjectに渡す必要はありませんが、入力画像が224ｘ224を想定しているためその為の確認用です。
 
-�����clipRect�𐳂����ݒ肷��Γ����͂��ł����A�p������̃��f���͂܂��������ł��̂ł���قǂ̐��x������܂���B����Ȃ�̐��x���o�����߂ɂ́A
-- **[�w�i���V���v���ł��邱�Ɓi���̔��˂Ƃ�����F�����鎖������܂��j]
-- **[��ɑS�g���ʂ��Ă��邱�Ɓi�S�g���ʂ��Ă��鎖���O��ō���Ă��܂��j]
-- **[�l�����傫�����Ȃ����������Ȃ�]
-- **[�_�{���Ƃ������͌�F�����₷���ł��B�葫���킩�镞���ǂ��ł�]
+動画とclipRectを正しく設定すれば動くはずですが、姿勢推定のモデルはまだ研究中ですのでそれほどの精度がありません。それなりの精度を出すためには、
+- 背景がシンプルであること（床の反射とかも誤認識する事があります）
+- 常に全身が写っていること（全身が写っている事が前提で作っています）
+- 人物が大きくもなく小さくもなく
+- ダボっとした服は誤認識しやすいです。手足がわかる服が良いです
 
 
-�T���v���̓����[�~�\�W�T�����[�}���l](https://www.youtube.com/user/tanahiro814)��[������̓���](https://www.youtube.com/watch?v=C9VtSRiEM7s)���g�p�����Ē����Ă���܂��B
+サンプルの動画は[ミソジサラリーマン様](https://www.youtube.com/user/tanahiro814)の[こちらの動画](https://www.youtube.com/watch?v=C9VtSRiEM7s)を使用させて頂いております。
 
 
 # License
-��c���ړI�̎g�p�̂݉�
+非営利目的の使用のみ可
 
 Non-commercial use only
 

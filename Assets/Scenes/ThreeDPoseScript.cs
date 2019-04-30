@@ -93,7 +93,7 @@ public class ThreeDPoseScript : MonoBehaviour
     private RenderTexture videoTexture;
     private Texture2D texture;
     private float videoWidth, videoHeight;
-    private UnityEngine.Rect clipSize;
+    private UnityEngine.Rect clipRect;
 
     // Properties for onnx and estimation
     private Net Onnx;
@@ -136,7 +136,7 @@ public class ThreeDPoseScript : MonoBehaviour
         var w = (videoWidth + padWidth * 2f) * 0.15f;
         padWidth += w;
         padHeight += w;
-        clipSize = new UnityEngine.Rect(-padWidth, -padHeight, videoWidth + padWidth * 2, videoHeight + padHeight * 2);
+        clipRect = new UnityEngine.Rect(-padWidth, -padHeight, videoWidth + padWidth * 2, videoHeight + padHeight * 2);
 
         InitONNX();
         Init();
@@ -305,7 +305,7 @@ public class ThreeDPoseScript : MonoBehaviour
 
     public void InitONNX()
     {
-        Onnx = Net.ReadNetFromONNX(Application.dataPath + @"\MobileNet3D2_ep22.onnx");
+        Onnx = Net.ReadNetFromONNX(Application.dataPath + @"\MobileNet3D2.onnx");
         for (var i = 0; i < 4; i++) outputs[i] = new Mat();
     }
 
@@ -409,12 +409,12 @@ public class ThreeDPoseScript : MonoBehaviour
     /// <returns></returns>
     private Mat ResizeTexture(Texture2D src)
     {
-        float bbLeft = clipSize.xMin;
-        float bbRight = clipSize.xMax;
-        float bbTop = clipSize.yMin;
-        float bbBottom = clipSize.yMax;
-        float bbWidth = clipSize.width;
-        float bbHeight = clipSize.height;
+        float bbLeft = clipRect.xMin;
+        float bbRight = clipRect.xMax;
+        float bbTop = clipRect.yMin;
+        float bbBottom = clipRect.yMax;
+        float bbWidth = clipRect.width;
+        float bbHeight = clipRect.height;
 
         float videoLongSide = (videoWidth > videoHeight) ? videoWidth : videoHeight;
         float videoShortSide = (videoWidth > videoHeight) ? videoHeight : videoWidth;

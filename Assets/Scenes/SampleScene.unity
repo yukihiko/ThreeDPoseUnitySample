@@ -436,8 +436,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838b93937cfff6b42be08cded0c5c017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TextureObject: {fileID: 71480453}
   UnityChan: {fileID: 1009339737}
+  UseWebCam: 0
+  clipScale: 0.15
+  TextureObject: {fileID: 71480453}
 --- !u!1 &615228728 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8315583863143335298, guid: 376f47ea3b23a0c4390f513d69e1ca66,

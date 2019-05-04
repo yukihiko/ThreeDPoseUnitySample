@@ -89,11 +89,18 @@ public class ThreeDPoseScript : MonoBehaviour
     public GameObject UnityChan;
     private Animator anim;
 
+    // For camera play
+    public bool UseWebCam = true;
+    private WebCamTexture webCamTexture;
+
     // For video play
     private RenderTexture videoTexture;
+
     private Texture2D texture;
+    private int videoScreenWidth = 2560;
     private float videoWidth, videoHeight;
     private UnityEngine.Rect clipRect;
+    public float clipScale;
 
     // Properties for onnx and estimation
     private Net Onnx;
@@ -124,16 +131,22 @@ public class ThreeDPoseScript : MonoBehaviour
 
         anim = UnityChan.GetComponent<Animator>();
 
-        VideoPlayStart();
-
-        texture = new Texture2D(videoTexture.width, videoTexture.height);
+        if (UseWebCam)
+        {
+            CameraPlayStart();
+        }
+        else
+        {
+            VideoPlayStart();
+        }
 
         // Clip size
         videoWidth = texture.width;
         videoHeight = texture.height;
         float padWidth = (videoWidth < videoHeight) ? 0 : (videoHeight - videoWidth) / 2;
         float padHeight = (videoWidth < videoHeight) ? (videoWidth - videoHeight) / 2 : 0;
-        var w = (videoWidth + padWidth * 2f) * 0.15f;
+        if (clipScale == 0f) clipScale = 0.001f;
+        var w = (videoWidth + padWidth * 2f) * clipScale;
         padWidth += w;
         padHeight += w;
         clipRect = new UnityEngine.Rect(-padWidth, -padHeight, videoWidth + padWidth * 2, videoHeight + padHeight * 2);
@@ -244,6 +257,23 @@ public class ThreeDPoseScript : MonoBehaviour
     }
 
 
+    private void CameraPlayStart()
+    {
+        WebCamDevice[] devices = WebCamTexture.devices;
+        webCamTexture = new WebCamTexture(devices[0].name);
+
+        GameObject videoScreen = GameObject.Find("VideoScreen");
+        RawImage screen = videoScreen.GetComponent<RawImage>();
+        var sd = screen.GetComponent<RectTransform>();
+        screen.texture = webCamTexture;
+
+        webCamTexture.Play();
+
+        sd.sizeDelta = new Vector2(videoScreenWidth, (int)(videoScreenWidth * webCamTexture.height / webCamTexture.width));
+
+        texture = new Texture2D(webCamTexture.width, webCamTexture.height);
+    }
+
     private void VideoPlayStart()
     {
         var obj = GameObject.Find("Video Player");
@@ -257,22 +287,34 @@ public class ThreeDPoseScript : MonoBehaviour
         GameObject videoScreen = GameObject.Find("VideoScreen");
         RawImage screen = videoScreen.GetComponent<RawImage>();
         var sd = screen.GetComponent<RectTransform>();
-        sd.sizeDelta = new Vector2((int)videoPlayer.clip.width*2f, (int)videoPlayer.clip.height * 2f);
+        sd.sizeDelta = new Vector2(videoScreenWidth, (int)(videoScreenWidth * videoPlayer.clip.height / videoPlayer.clip.width));
         screen.texture = videoTexture;
 
-        // 動画の再生開始
         videoPlayer.Play();
+
+        texture = new Texture2D(videoTexture.width, videoTexture.height);
     }
 
     void Update()
     {
-        if (videoTexture != null)
+        if (UseWebCam)
         {
-            //動画ファイルの映像をテクスチャに反映
-            Graphics.SetRenderTarget(videoTexture);
-            texture.ReadPixels(new UnityEngine.Rect(0, 0, videoTexture.width, videoTexture.height), 0, 0);
-            texture.Apply();
-            Graphics.SetRenderTarget(null);
+            if (webCamTexture != null)
+            {
+                Color32[] color32 = webCamTexture.GetPixels32();
+                texture.SetPixels32(color32);
+                texture.Apply();
+            }
+        }
+        else
+        {
+            if (videoTexture != null)
+            {
+                Graphics.SetRenderTarget(videoTexture);
+                texture.ReadPixels(new UnityEngine.Rect(0, 0, videoTexture.width, videoTexture.height), 0, 0);
+                texture.Apply();
+                Graphics.SetRenderTarget(null);
+            }
         }
 
         StartCoroutine("PoseUpdate", texture);

@@ -4,6 +4,8 @@
 
 ThreeDPoseUnitySampleは、その学習結果のモデルとUnityを使用した実装サンプルです。姿勢推定は一人が写っている画像を前提としています。複数人の推定には対応していません。
 
+The next version uses Unity Barracuda. It has been published in this repository.
+
  <img src='https://github.com/yukihiko/ThreeDPoseUnitySample/blob/master/samplemv.gif' width=600/>
 
 ## 使い方

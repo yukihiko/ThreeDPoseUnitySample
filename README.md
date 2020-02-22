@@ -1,10 +1,11 @@
 # ThreeDPoseUnitySample
 
+The next version uses Unity Barracuda. It has been published in this repository.
+https://github.com/digital-standard/ThreeDPoseUnityBarracuda
+
 画像、動画、カメラなどの２次元の画像データから人体の３次元の姿勢を推定する機械学習を研究しています。こちらの内容は[私のTwitterアカウント](https://twitter.com/yukihiko_a)を参照ください。
 
 ThreeDPoseUnitySampleは、その学習結果のモデルとUnityを使用した実装サンプルです。姿勢推定は一人が写っている画像を前提としています。複数人の推定には対応していません。
-
-The next version uses Unity Barracuda. It has been published in this repository.
 
  <img src='https://github.com/yukihiko/ThreeDPoseUnitySample/blob/master/samplemv.gif' width=600/>
 
